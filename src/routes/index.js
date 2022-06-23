@@ -7,7 +7,7 @@ export default function Routes() {
   return (
     <Switch>
       <Route exact path="/" render={ () => <Login /> } />
-      <Route path="/carteira" render={ () => <Wallet /> } />
+      <Route exact path="/carteira" render={ () => <Wallet /> } />
     </Switch>
   );
 }
