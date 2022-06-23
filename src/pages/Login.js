@@ -79,3 +79,5 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(null, mapDispatchToProps)(Login);
+
+// refs: https://www.horadecodar.com.br/2020/09/13/como-validar-email-com-javascript/
