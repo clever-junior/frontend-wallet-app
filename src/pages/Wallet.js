@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import getCurrencies from '../services/api';
 import Header from '../components/Header';
+import WalletForm from '../components/WalletForm';
 
 class Wallet extends React.Component {
   componentDidMount() {
@@ -11,12 +12,23 @@ class Wallet extends React.Component {
   }
 
   render() {
-    return <div><Header /></div>;
+    const { currencies } = this.props;
+    return (
+      <div>
+        <Header />
+        <WalletForm currencies={ currencies } />
+      </div>);
   }
 }
 
 Wallet.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  currencies: PropTypes
+    .arrayOf(PropTypes.string.isRequired).isRequired,
 };
 
-export default connect()(Wallet);
+const mapStateToProps = (state) => ({
+  currencies: state.wallet.currencies,
+});
+
+export default connect(mapStateToProps)(Wallet);
