@@ -2,10 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-function Header({ email }) {
-  const totalExpense = 0;
+function Header({ email, value }) {
   const currency = 'BRL';
-  String(totalExpense).toLocaleString('pt-BR', { style: 'currency', currency });
+  String(value).toLocaleString('pt-BR', { style: 'currency', currency });
   return (
     <div>
       <p data-testid="email-field">
@@ -16,7 +15,7 @@ function Header({ email }) {
       <p data-testid="total-field">
         Despesa Total:
         {' '}
-        { totalExpense }
+        { value }
       </p>
       <p data-testid="header-currency-field">
         { currency }
@@ -25,7 +24,10 @@ function Header({ email }) {
   );
 }
 
-Header.propTypes = { email: PropTypes.string.isRequired };
+Header.propTypes = {
+  email: PropTypes.string.isRequired,
+  value: PropTypes.number.isRequired,
+};
 
 const mapStateToProps = (state) => ({
   email: state.user.email,

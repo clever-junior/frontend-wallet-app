@@ -6,29 +6,33 @@ import Header from '../components/Header';
 import WalletForm from '../components/WalletForm';
 
 class Wallet extends React.Component {
+  state = {
+    totalExpensesValue: 0,
+  }
+
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(getCurrencies());
   }
 
+  updateExpenseValue = (currentValue) => {
+    this.setState((prevState) => ({
+      totalExpensesValue: prevState.totalExpensesValue + currentValue,
+    }));
+  }
+
   render() {
-    const { currencies } = this.props;
+    const { totalExpensesValue } = this.state;
     return (
       <div>
-        <Header />
-        <WalletForm currencies={ currencies } />
+        <Header value={ totalExpensesValue } />
+        <WalletForm updateValue={ this.updateExpenseValue } />
       </div>);
   }
 }
 
 Wallet.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  currencies: PropTypes
-    .arrayOf(PropTypes.string.isRequired).isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  currencies: state.wallet.currencies,
-});
-
-export default connect(mapStateToProps)(Wallet);
+export default connect()(Wallet);
