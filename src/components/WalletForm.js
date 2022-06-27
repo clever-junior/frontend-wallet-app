@@ -32,14 +32,11 @@ function WalletForm({ currencies, dispatch, expenses, updateValue }) {
     method: inputPaymentMethod,
     tag: inputTag,
   };
-
-  useEffect(() => {
-    updateValue(currentExpense);
-  }, [updateValue, currentExpense]);
-
   const stateExchangeRates = async () => setExchangeRates(await getExchangeRates());
 
-  stateExchangeRates();
+  useEffect(() => {
+    stateExchangeRates();
+  }, []);
 
   const handleChange = ({ target }) => {
     setHandle(target, setState);
@@ -55,6 +52,7 @@ function WalletForm({ currencies, dispatch, expenses, updateValue }) {
 
   const onAddButtonClick = () => {
     setId(id + 1);
+    updateValue(currentExpense);
     setCurrentExpense(inputValue * exchangeRates[inputCurrency].ask);
     resset();
     dispatch(getExpenses(id, stateValues, expenses));
