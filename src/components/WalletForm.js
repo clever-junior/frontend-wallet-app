@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Select from './Select';
 import setHandle from '../helpers/index';
-import { getExchangeRates, getExpenses } from '../services/api';
+import { getExpenses } from '../services/api';
 
-function WalletForm({ currencies, dispatch, expenses, updateValue }) {
+function WalletForm({ currencies, dispatch, expenses }) {
   const paymentMethods = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
   const tag = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
   const [inputValue, setInputValue] = useState(0);
@@ -14,15 +14,13 @@ function WalletForm({ currencies, dispatch, expenses, updateValue }) {
   const [inputTag, setInputTag] = useState(tag[0]);
   const [inputDescription, setInputDescription] = useState('');
   const [id, setId] = useState(0);
-  const [currentExpense, setCurrentExpense] = useState(0);
-  const [exchangeRates, setExchangeRates] = useState({});
   const setState = {
     setInputValue,
     setInputCurrency,
     setInputPaymentMethod,
     setInputTag,
     setInputDescription,
-    setCurrentExpense,
+    // setCurrentExpense,
   };
 
   const stateValues = {
@@ -32,11 +30,6 @@ function WalletForm({ currencies, dispatch, expenses, updateValue }) {
     method: inputPaymentMethod,
     tag: inputTag,
   };
-  const stateExchangeRates = async () => setExchangeRates(await getExchangeRates());
-
-  useEffect(() => {
-    stateExchangeRates();
-  }, []);
 
   const handleChange = ({ target }) => {
     setHandle(target, setState);
@@ -52,8 +45,6 @@ function WalletForm({ currencies, dispatch, expenses, updateValue }) {
 
   const onAddButtonClick = () => {
     setId(id + 1);
-    updateValue(currentExpense);
-    setCurrentExpense(inputValue * exchangeRates[inputCurrency].ask);
     resset();
     dispatch(getExpenses(id, stateValues, expenses));
   };
@@ -125,7 +116,6 @@ WalletForm.propTypes = {
       PropTypes.number.isRequired,
     ).isRequired,
   ).isRequired,
-  updateValue: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({

@@ -1,38 +1,49 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import getCurrencies from '../services/api';
 import Header from '../components/Header';
 import WalletForm from '../components/WalletForm';
+import WalletTable from '../components/WalletTable';
 
-class Wallet extends React.Component {
-  state = {
-    totalExpensesValue: 0,
-  }
+function Wallet({ dispatch, expenses }) {
+  const [totalExpensesValue, setTotalExpensesvalue] = useState(0);
 
-  componentDidMount() {
-    const { dispatch } = this.props;
+  useEffect(() => {
     dispatch(getCurrencies());
-  }
+    const updateExpenseValue = () => {
+      const sum = [];
+      expenses.forEach((expensy) => {
+        sum.push(expensy.value * expensy.exchangeRates[expensy.currency].ask);
+      });
+      if (sum.length > 0) {
+        const total = sum.reduce((prev, current) => prev + current);
+        setTotalExpensesvalue(total);
+      }
+    };
+    updateExpenseValue();
+  }, [dispatch, expenses]);
 
-  updateExpenseValue = (currentValue) => {
-    this.setState((prevState) => ({
-      totalExpensesValue: prevState.totalExpensesValue + currentValue,
-    }));
-  }
-
-  render() {
-    const { totalExpensesValue } = this.state;
-    return (
-      <div>
-        <Header value={ totalExpensesValue } />
-        <WalletForm updateValue={ this.updateExpenseValue } />
-      </div>);
-  }
+  return (
+    <div>
+      <Header value={ totalExpensesValue } />
+      <WalletForm />
+      <WalletTable />
+    </div>);
 }
 
 Wallet.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  expenses: PropTypes.arrayOf(
+    PropTypes.shape(
+      PropTypes.string.isRequired,
+      PropTypes.number.isRequired,
+    ).isRequired,
+  ).isRequired,
 };
 
-export default connect()(Wallet);
+const mapStateToProps = (state) => ({
+  expenses: state.wallet.expenses,
+});
+
+export default connect(mapStateToProps)(Wallet);

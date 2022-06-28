@@ -1,4 +1,4 @@
-import { failedRequest, requestCurrencies, setCurrencies, setExpenses } from '../actions';
+import { failedRequest, setCurrencies, setExpenses } from '../actions';
 import { createExpenses } from '../helpers';
 
 export const apiRequest = async () => {
@@ -9,7 +9,6 @@ export const apiRequest = async () => {
 
 export default function getCurrencies() {
   return async (dispatch) => {
-    dispatch(requestCurrencies());
     try {
       dispatch(setCurrencies(Object.keys(await apiRequest())
         .filter((currency) => currency !== 'USDT')));
@@ -19,23 +18,11 @@ export default function getCurrencies() {
   };
 }
 
-export async function getExchangeRates() {
-  const result = await apiRequest();
-  const keys = Object.keys(result).filter((currency) => currency !== 'USDT');
-  const exchangeRates = {};
-  keys.forEach((currency) => {
-    exchangeRates[currency] = {
-      ask: result[currency].ask, name: result[currency].name, code: currency,
-    };
-  });
-  return exchangeRates;
-}
-
 export function getExpenses(id, keys, expenses) {
   return async (dispatch) => {
     try {
       dispatch(setExpenses(expenses
-        .concat(await createExpenses(id, keys, await getExchangeRates()))));
+        .concat(await createExpenses(id, keys, await apiRequest()))));
     } catch (error) {
       dispatch(failedRequest(error));
     }
