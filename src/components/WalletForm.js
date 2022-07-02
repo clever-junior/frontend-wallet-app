@@ -45,8 +45,8 @@ function WalletForm({ currencies, dispatch, expenses }) {
 
   const onAddButtonClick = () => {
     setId(id + 1);
-    resset();
     dispatch(getExpenses(id, stateValues, expenses));
+    resset();
   };
 
   return (

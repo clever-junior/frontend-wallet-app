@@ -1,19 +1,38 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-export default function WalletTable() {
+function WalletTable({ expenses }) {
+  const titles = ['Descrição', 'Tag', 'Método de pagamento',
+    'Valor', 'Moeda', 'Câmbio utilizado', 'Valor convertido',
+    'Moeda de conversão', 'Editar/Excluir'];
   return (
     <table>
       <tr>
-        <th>Descrição</th>
-        <th>Tag</th>
-        <th>Método de pagamento</th>
-        <th>Valor</th>
-        <th>Moeda</th>
-        <th>Câmbio utilizado</th>
-        <th>Valor convertido</th>
-        <th>Moeda de conversão</th>
-        <th>Editar/Excluir</th>
+        {
+          titles.map((title, index) => (
+            <th key={ index }>
+              {title}
+              {console.log(expenses)}
+            </th>
+          ))
+        }
       </tr>
     </table>
   );
 }
+
+WalletTable.propTypes = {
+  expenses: PropTypes.arrayOf(
+    PropTypes.shape(
+      PropTypes.string.isRequired,
+      PropTypes.number.isRequired,
+    ).isRequired,
+  ).isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  expenses: state.wallet.expenses,
+});
+
+export default connect(mapStateToProps)(WalletTable);
