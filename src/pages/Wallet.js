@@ -21,6 +21,7 @@ function Wallet({ dispatch, expenses }) {
         setTotalExpensesvalue(total);
       }
     };
+
     updateExpenseValue();
   }, [dispatch, expenses]);
 
