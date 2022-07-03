@@ -1,4 +1,4 @@
-import { FAILED_REQUEST, SET_CURRENCIES, SET_EXPENSES } from '../actions';
+import { DELETE_TASK, FAILED_REQUEST, SET_CURRENCIES, SET_EXPENSES } from '../actions';
 
 // Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
 const INITIAL_STATE = {
@@ -17,6 +17,9 @@ const wallet = (state = INITIAL_STATE, { type, value, payload }) => {
     return { ...state, expenses: value };
   case FAILED_REQUEST:
     return { ...state, error: payload };
+  case DELETE_TASK:
+    return { ...state,
+      expenses: state.expenses.filter((expense) => expense.id !== value) };
   default:
     return state;
   }

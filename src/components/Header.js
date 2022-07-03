@@ -15,7 +15,7 @@ function Header({ email, value }) {
       <p data-testid="total-field">
         Despesa Total:
         {' '}
-        { value }
+        { +value.toFixed(2) }
       </p>
       <p data-testid="header-currency-field">
         { currency }
