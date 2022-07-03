@@ -64,6 +64,7 @@ class Login extends React.Component {
             Entrar
           </Link>
         </button>
+        { console.log('OLÁ MUNDO') }
       </form>);
   }
 }
