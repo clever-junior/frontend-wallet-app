@@ -10,7 +10,13 @@ function Wallet({ dispatch, expenses }) {
   const [totalExpensesValue, setTotalExpensesvalue] = useState(0);
 
   useEffect(() => {
-    dispatch(getCurrencies());
+    function dispatchData() {
+      dispatch(getCurrencies());
+    }
+    dispatchData();
+  }, [dispatch]);
+
+  useEffect(() => {
     const updateExpenseValue = () => {
       const sum = [];
       expenses.forEach((expensy) => {
@@ -23,7 +29,7 @@ function Wallet({ dispatch, expenses }) {
     };
 
     updateExpenseValue();
-  }, [dispatch, expenses]);
+  }, [expenses]);
 
   return (
     <div>

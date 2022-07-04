@@ -14,7 +14,7 @@ export default function Select({ id, array, name, title, testId, handleChange, v
       >
         {
           array.map((item, index) => (
-            <option key={ index } value={ item }>
+            <option key={ `pinba=${index}` } value={ item }>
               {item}
             </option>
           ))

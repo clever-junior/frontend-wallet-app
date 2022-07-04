@@ -21,9 +21,7 @@ function WalletTable({ expenses, dispatch }) {
     );
   };
 
-  const onDeleteBtnClick = (id) => {
-    dispatch(deleteExpense(id));
-  };
+  const onDeleteBtnClick = (id) => dispatch(deleteExpense(id));
 
   return (
     <table>
@@ -31,7 +29,7 @@ function WalletTable({ expenses, dispatch }) {
         <tr>
           {
             titles.map((title, index) => (
-              <th key={ index }>
+              <th key={ `title=${index}` }>
                 {title}
               </th>
             ))
@@ -40,8 +38,8 @@ function WalletTable({ expenses, dispatch }) {
       </thead>
       <tbody>
         {
-          expenses?.map((element, index) => (
-            <tr key={ index }>
+          expenses?.map((element) => (
+            <tr key={ element.id }>
               <td>
                 {element.description}
               </td>
