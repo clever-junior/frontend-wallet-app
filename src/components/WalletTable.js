@@ -66,7 +66,10 @@ function WalletTable({ expenses, dispatch }) {
                 Real
               </td>
               <td>
-                <button type="button">
+                <button
+                  type="button"
+                  data-testid="edit-btn"
+                >
                   Editar
                 </button>
 
